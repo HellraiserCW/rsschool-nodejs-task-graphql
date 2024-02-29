@@ -1,6 +1,6 @@
-import { MemberIdType, MembersType, MemberType } from '../types/member.js';
 import { Member } from '../interfaces/member.interface.js';
 import { GraphqlContext, Query } from '../interfaces/app.interface.js';
+import { MemberIdType, MembersType, MemberType } from '../types/member.js';
 
 export const MemberQueries: Query = {
     memberType: {

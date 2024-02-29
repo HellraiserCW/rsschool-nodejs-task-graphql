@@ -20,19 +20,19 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
         balance: {type: GraphQLFloat},
         profile: {
             type: ProfileType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext) => {
+            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<void> => {
                 await prisma.profile.findFirst({where: {userId: id}});
             }
         },
         posts: {
             type: PostsType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext) => {
+            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<void> => {
                 await prisma.post.findMany({where: {authorId: id}});
             }
         },
         userSubscribedTo: {
             type: UsersType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext) => {
+            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<User[]> => {
                 const queryResult = await prisma.subscribersOnAuthors.findMany({
                     where: {subscriberId: id},
                     select: {author: true},
@@ -43,7 +43,7 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
         },
         subscribedToUser: {
             type: UsersType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext) => {
+            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<User[]> => {
                 const queryResult = await prisma.subscribersOnAuthors.findMany({
                     where: {authorId: id},
                     select: {subscriber: true},
