@@ -19,10 +19,10 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         async handler(req) {
             const {query: source, variables: variableValues} = req.body;
             const queryDocNode = parse(source);
-            const validationErrors = validate(schema, queryDocNode, [depthLimit(5)]);
+            const graphQLErrors = validate(schema, queryDocNode, [depthLimit(5)]);
 
-            if (validationErrors.length > 0) {
-                return {data: '', errors: validationErrors};
+            if (graphQLErrors.length > 0) {
+                return {data: '', errors: graphQLErrors};
             }
 
             const {data, errors} = await graphql({

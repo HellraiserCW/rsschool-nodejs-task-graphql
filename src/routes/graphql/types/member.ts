@@ -6,9 +6,9 @@ import {
     GraphQLNonNull,
     GraphQLObjectType
 } from 'graphql/type/index.js';
-import { ProfilesType } from './profile.js';
 import { Member } from '../interfaces/member.interface.js';
 import { GraphqlContext } from '../interfaces/app.interface.js';
+import { ProfilesType } from './profile.js';
 
 enum MemberTypes {
     Basic = 'basic',
