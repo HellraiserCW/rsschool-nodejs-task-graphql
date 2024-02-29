@@ -26,27 +26,3 @@ export interface CreateUser {
 export interface ChangeUser extends CreateUser {
     id: string;
 }
-
-interface ResolverFunction<TSource, TArgs, TContext, TReturn> {
-    (
-        source: TSource,
-        args: TArgs,
-        context: TContext,
-        info: TReturn
-    ): TReturn | Promise<TReturn>;
-}
-
-export interface UserQuery {
-    [key: string]: {
-        type: GraphQLObjectType | GraphQLList<GraphQLObjectType> | GraphQLScalarType;
-        args?: {
-            id?: {
-                type: GraphQLScalarType;
-            };
-            data?: {
-                type: GraphQLInputObjectType;
-            };
-        };
-        resolve: ResolverFunction<any, any, GraphqlContext, any>;
-    }
-}

@@ -58,7 +58,7 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
 export const UsersType: GraphQLList<GraphQLObjectType> = new GraphQLList(UserType);
 
 export const CreateUserType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'CreateUserType',
+    name: 'CreateUser',
     fields: () => ({
         name: {type: new GraphQLNonNull(GraphQLString)},
         balance: {type: new GraphQLNonNull(GraphQLFloat)}
@@ -66,7 +66,7 @@ export const CreateUserType: GraphQLInputObjectType = new GraphQLInputObjectType
 });
 
 export const ChangeUserType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'ChangeUserType',
+    name: 'ChangeUser',
     fields: () => ({
         name: {type: GraphQLString},
         balance: {type: GraphQLFloat}

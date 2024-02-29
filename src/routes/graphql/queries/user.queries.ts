@@ -1,10 +1,10 @@
 import { GraphQLBoolean } from 'graphql/type/index.js';
 import { UUIDType } from '../types/uuid.js';
 import { ChangeUserType, CreateUserType, UsersType, UserType } from '../types/user.js';
-import { ChangeUser, CreateUser, User, UserQuery } from '../interfaces/user.interface.js'
-import { GraphqlContext } from '../interfaces/app.interface.js';
+import { ChangeUser, CreateUser, User } from '../interfaces/user.interface.js'
+import { GraphqlContext, Query } from '../interfaces/app.interface.js';
 
-export const UserQueries: UserQuery = {
+export const UserQueries: Query = {
     user: {
         type: UserType,
         args: {id: {type: UUIDType}},
