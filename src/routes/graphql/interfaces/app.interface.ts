@@ -31,6 +31,9 @@ export interface Query {
             data?: {
                 type: GraphQLInputObjectType;
             };
+            authorId?: {
+                type: GraphQLScalarType;
+            };
         };
         resolve: ResolverFunction<any, any, GraphqlContext, any>;
     }

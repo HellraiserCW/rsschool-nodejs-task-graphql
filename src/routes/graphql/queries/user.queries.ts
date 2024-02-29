@@ -1,7 +1,7 @@
 import { GraphQLBoolean } from 'graphql/type/index.js';
 import { UUIDType } from '../types/uuid.js';
 import { ChangeUserType, CreateUserType, UsersType, UserType } from '../types/user.js';
-import { ChangeUser, CreateUser, User } from '../interfaces/user.interface.js'
+import { ChangeUser, CreateUser, Subscriber, User } from '../interfaces/user.interface.js'
 import { GraphqlContext, Query } from '../interfaces/app.interface.js';
 
 export const UserQueries: Query = {
@@ -44,5 +44,27 @@ export const UserQueries: Query = {
 
             return true;
         }
+    },
+    subscribeTo: {
+        type: UserType,
+        args: {id: {type: UUIDType}, authorId: {type: UUIDType}},
+        resolve: async (_: unknown, {id, authorId}: Subscriber, {prisma}: GraphqlContext): Promise<unknown> => {
+            await prisma.subscribersOnAuthors.create({data: {subscriberId: id, authorId}});
+
+            return await prisma.user.findFirst({where: {id}});
+        },
+    },
+    unsubscribeFrom: {
+        type: GraphQLBoolean,
+        args: {id: {type: UUIDType}, authorId: {type: UUIDType}},
+        resolve: async (_: unknown, {id, authorId}: Subscriber, {prisma}: GraphqlContext): Promise<boolean> => {
+            try {
+                await prisma.subscribersOnAuthors.deleteMany({where: {subscriberId: id, authorId}});
+            } catch {
+                return false;
+            }
+
+            return true;
+        },
     }
 };
