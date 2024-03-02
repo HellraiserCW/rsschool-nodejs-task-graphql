@@ -6,11 +6,8 @@ import {
     GraphQLNonNull,
     GraphQLObjectType
 } from 'graphql/type/index.js';
-import { Member } from '../interfaces/member.interface.js';
-import { GraphqlContext } from '../interfaces/app.interface.js';
-import { ProfilesType } from './profile.js';
 
-enum MemberTypes {
+export enum MemberTypes {
     Basic = 'basic',
     Business = 'business'
 }
@@ -18,30 +15,20 @@ enum MemberTypes {
 export const MemberId: GraphQLEnumType = new GraphQLEnumType({
     name: 'MemberId',
     values: {
-        basic: {
-            value: MemberTypes.Basic,
-        },
-        business: {
-            value: MemberTypes.Business,
-        },
-    },
+        basic: {value: MemberTypes.Basic},
+        business: {value: MemberTypes.Business},
+    }
 });
 
-export const MemberType: GraphQLObjectType = new GraphQLObjectType({
+export const MemberType = new GraphQLObjectType({
     name: 'Member',
     fields: () => ({
         id: {type: MemberId},
         discount: {type: GraphQLFloat},
         postsLimitPerMonth: {type: GraphQLInt},
-        profiles: {
-            type: ProfilesType,
-            resolve: async ({id}: Member, {prisma}: GraphqlContext): Promise<void> => {
-                await prisma.profile.findMany({where: {memberTypeId: id}});
-            }
-        }
     })
 });
 
-export const MemberIdType: GraphQLNonNull<GraphQLEnumType> = new GraphQLNonNull(MemberId);
+export const MemberIdNonNullType: GraphQLNonNull<GraphQLEnumType> = new GraphQLNonNull(MemberId);
 
 export const MembersType: GraphQLList<GraphQLObjectType> = new GraphQLList(MemberType);

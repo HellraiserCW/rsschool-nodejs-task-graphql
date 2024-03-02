@@ -8,11 +8,11 @@ import {
 } from 'graphql/type/index.js';
 import { UUIDType } from './uuid.js';
 import { User } from '../interfaces/user.interface.js';
-import { GraphqlContext } from '../interfaces/app.interface.js';
 import { ProfileType } from './profile.js';
 import { PostsType } from './post.js';
+import { GqlContext } from '../interfaces/app.interface.js';
 
-export const UserType: GraphQLObjectType = new GraphQLObjectType({
+export const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
         id: {type: UUIDType},
@@ -20,36 +20,26 @@ export const UserType: GraphQLObjectType = new GraphQLObjectType({
         balance: {type: GraphQLFloat},
         profile: {
             type: ProfileType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<void> => {
-                await prisma.profile.findFirst({where: {userId: id}});
+            resolve: async ({id}: User, _, {loaders: {profileLoader}}: GqlContext) => {
+                return profileLoader.load(id);
             }
         },
         posts: {
             type: PostsType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<void> => {
-                await prisma.post.findMany({where: {authorId: id}});
+            resolve: async ({id}: User, _, {loaders: {postsLoader}}: GqlContext) => {
+                return postsLoader.load(id);
             }
         },
         userSubscribedTo: {
             type: UsersType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<User[]> => {
-                const queryResult = await prisma.subscribersOnAuthors.findMany({
-                    where: {subscriberId: id},
-                    select: {author: true},
-                });
-
-                return queryResult.map((result) => result.author);
+            resolve: async ({id}: User, _, {loaders: {userSubscribedToLoader}}: GqlContext) => {
+                return userSubscribedToLoader.load(id);
             },
         },
         subscribedToUser: {
             type: UsersType,
-            resolve: async ({id}: User, {prisma}: GraphqlContext): Promise<User[]> => {
-                const queryResult = await prisma.subscribersOnAuthors.findMany({
-                    where: {authorId: id},
-                    select: {subscriber: true},
-                });
-
-                return queryResult.map((result) => result.subscriber);
+            resolve: async ({id}: User, _, {loaders: {subscribedToUserLoader}}: GqlContext) => {
+                return subscribedToUserLoader.load(id);
             }
         }
     })
@@ -68,7 +58,10 @@ export const CreateUserType: GraphQLInputObjectType = new GraphQLInputObjectType
 export const ChangeUserType: GraphQLInputObjectType = new GraphQLInputObjectType({
     name: 'ChangeUser',
     fields: () => ({
+        id: {type: UUIDType},
         name: {type: GraphQLString},
         balance: {type: GraphQLFloat}
     })
 });
+
+export const ChangeUserNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangeUserType);

@@ -7,7 +7,7 @@ export interface Profile {
 }
 
 export interface CreateProfile {
-    data: {
+    dto: {
         userId: string;
         memberTypeId: string;
         isMale: boolean;

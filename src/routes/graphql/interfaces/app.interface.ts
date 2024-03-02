@@ -1,41 +1,21 @@
+import DataLoader from 'dataloader';
 import { PrismaClient } from '@prisma/client';
 
-import {
-    GraphQLEnumType,
-    GraphQLInputObjectType,
-    GraphQLList,
-    GraphQLNonNull,
-    GraphQLObjectType
-} from 'graphql/type/index.js';
-import { GraphQLScalarType } from 'graphql/index.js';
+import { Post } from './post.interface.js';
+import { Profile } from './profile.interface.js';
+import { User } from './user.interface.js';
+import { Member } from './member.interface.js';
 
-export interface GraphqlContext {
+export type DataLoaders = {
+    userLoader: DataLoader<string, User>;
+    subscribedToUserLoader: DataLoader<string, User[]>;
+    userSubscribedToLoader: DataLoader<string, User[]>;
+    memberTypeLoader: DataLoader<string, Member>;
+    postsLoader: DataLoader<string, Post[]>;
+    profileLoader: DataLoader<string, Profile>;
+};
+
+export interface GqlContext {
     prisma: PrismaClient;
-}
-
-interface ResolverFunction<TSource, TArgs, TContext, TReturn> {
-    (
-        source: TSource,
-        args: TArgs,
-        context: TContext,
-        info: TReturn
-    ): TReturn | Promise<TReturn>;
-}
-
-export interface Query {
-    [key: string]: {
-        type: GraphQLObjectType | GraphQLList<GraphQLObjectType> | GraphQLScalarType;
-        args?: {
-            id?: {
-                type: GraphQLScalarType | GraphQLNonNull<GraphQLEnumType>;
-            };
-            data?: {
-                type: GraphQLInputObjectType;
-            };
-            authorId?: {
-                type: GraphQLScalarType;
-            };
-        };
-        resolve: ResolverFunction<any, any, GraphqlContext, any>;
-    }
+    loaders: DataLoaders;
 }

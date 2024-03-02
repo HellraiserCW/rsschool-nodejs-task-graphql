@@ -12,8 +12,27 @@ export interface User {
     }[];
 }
 
+export type Subscriptions = {
+    subscribedToUser: {
+        subscriberId: string;
+        authorId: string;
+    }[];
+} & User;
+
+export type Subscribers = {
+    userSubscribedTo: {
+        subscriberId: string;
+        authorId: string;
+    }[];
+} & User;
+
+export interface Subscription {
+    userId: string;
+    authorId: string;
+}
+
 export interface CreateUser {
-    data: {
+    dto: {
         name: string;
         balance: number;
     };
@@ -21,9 +40,4 @@ export interface CreateUser {
 
 export interface ChangeUser extends CreateUser {
     id: string;
-}
-
-export interface Subscriber {
-    id: string;
-    authorId: string;
 }

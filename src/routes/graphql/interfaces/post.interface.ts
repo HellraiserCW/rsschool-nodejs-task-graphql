@@ -6,7 +6,7 @@ export interface Post {
 }
 
 export interface CreatePost {
-    data: {
+    dto: {
         authorId: string;
         title: string;
         content: string;
