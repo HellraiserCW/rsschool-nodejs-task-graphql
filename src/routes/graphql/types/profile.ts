@@ -31,8 +31,8 @@ export const ProfileType = new GraphQLObjectType({
 
 export const ProfilesType: GraphQLList<GraphQLObjectType> = new GraphQLList(ProfileType);
 
-export const CreateProfileType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'CreateProfile',
+export const CreateProfileInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'CreateProfileInput',
     fields: () => ({
         userId: {type: UUIDNonNullType},
         memberTypeId: {type: MemberIdNonNullType},
@@ -41,8 +41,8 @@ export const CreateProfileType: GraphQLInputObjectType = new GraphQLInputObjectT
     })
 });
 
-export const ChangeProfileType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'ChangeProfile',
+export const ChangeProfileInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'ChangeProfileInput',
     fields: () => ({
         memberTypeId: {type: MemberTypeId},
         isMale: {type: GraphQLBoolean},
@@ -50,6 +50,6 @@ export const ChangeProfileType: GraphQLInputObjectType = new GraphQLInputObjectT
     })
 });
 
-export const CreateProfileNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(CreateProfileType);
+export const CreateProfileNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(CreateProfileInputType);
 
-export const ChangeProfileNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangeProfileType);
+export const ChangeProfileNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangeProfileInputType);

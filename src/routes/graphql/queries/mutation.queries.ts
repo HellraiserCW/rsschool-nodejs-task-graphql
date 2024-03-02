@@ -1,5 +1,6 @@
-import { GraphQLBoolean, GraphQLObjectType } from 'graphql/type/index.js';
-import { ChangeUserNonNullType, CreateUserType, UserType } from '../types/user.js';
+import { GraphQLBoolean, GraphQLObjectType } from 'graphql';
+
+import { ChangeUserNonNullType, CreateUserNonNullType, UserType } from '../types/user.js';
 import { ChangeUser, CreateUser, Subscription, User } from '../interfaces/user.interface.js';
 import { UUIDNonNullType } from '../types/uuid.js';
 import { ChangePostNonNullType, CreatePostNonNullType, PostType } from '../types/post.js';
@@ -11,7 +12,7 @@ import { GqlContext } from '../interfaces/app.interface.js';
 const UserMutationQueries = {
     createUser: {
         type: UserType,
-        args: {dto: {type: CreateUserType}},
+        args: {dto: {type: CreateUserNonNullType}},
         resolve: async (_, {dto}: CreateUser, {prisma}: GqlContext) => {
             return await prisma.user.create({data: dto});
         }
@@ -67,7 +68,7 @@ const PostMutationQueries = {
     },
     changePost: {
         type: PostType,
-        args: {id: {type: UUIDNonNullType}, data: {type: ChangePostNonNullType}},
+        args: {id: {type: UUIDNonNullType}, dto: {type: ChangePostNonNullType}},
         resolve: async (_, {id, dto}: ChangePost, {prisma}: GqlContext) => {
             return await prisma.post.update({where: {id}, data: dto});
         }
@@ -93,7 +94,7 @@ const ProfileMutationQueries = {
     },
     changeProfile: {
         type: ProfileType,
-        args: {id: {type: UUIDNonNullType}, data: {type: ChangeProfileNonNullType}},
+        args: {id: {type: UUIDNonNullType}, dto: {type: ChangeProfileNonNullType}},
         resolve: async (_, {id, dto}: ChangeProfile, {prisma}: GqlContext) => {
             return await prisma.profile.update({where: {id}, data: dto});
         }
@@ -117,4 +118,3 @@ export const MutationQueries: GraphQLObjectType = new GraphQLObjectType({
         ...ProfileMutationQueries
     })
 });
-

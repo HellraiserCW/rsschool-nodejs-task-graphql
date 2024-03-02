@@ -47,16 +47,16 @@ export const UserType = new GraphQLObjectType({
 
 export const UsersType: GraphQLList<GraphQLObjectType> = new GraphQLList(UserType);
 
-export const CreateUserType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'CreateUser',
+export const CreateUserInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'CreateUserInput',
     fields: () => ({
         name: {type: new GraphQLNonNull(GraphQLString)},
         balance: {type: new GraphQLNonNull(GraphQLFloat)}
     })
 });
 
-export const ChangeUserType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'ChangeUser',
+export const ChangeUserInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'ChangeUserInput',
     fields: () => ({
         id: {type: UUIDType},
         name: {type: GraphQLString},
@@ -64,4 +64,6 @@ export const ChangeUserType: GraphQLInputObjectType = new GraphQLInputObjectType
     })
 });
 
-export const ChangeUserNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangeUserType);
+export const CreateUserNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(CreateUserInputType);
+
+export const ChangeUserNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangeUserInputType);

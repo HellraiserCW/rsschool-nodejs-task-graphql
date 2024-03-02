@@ -19,8 +19,8 @@ export const PostType = new GraphQLObjectType({
 
 export const PostsType: GraphQLList<GraphQLObjectType> = new GraphQLList(PostType);
 
-export const CreatePostType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'CreatePost',
+export const CreatePostInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'CreatePostInput',
     fields: () => ({
         authorId: {type: UUIDNonNullType},
         title: {type: new GraphQLNonNull(GraphQLString)},
@@ -28,8 +28,8 @@ export const CreatePostType: GraphQLInputObjectType = new GraphQLInputObjectType
     })
 });
 
-export const ChangePostType: GraphQLInputObjectType = new GraphQLInputObjectType({
-    name: 'ChangePost',
+export const ChangePostInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'ChangePostInput',
     fields: () => ({
         id: {type: UUIDType},
         authorId: {type: UUIDType},
@@ -38,6 +38,6 @@ export const ChangePostType: GraphQLInputObjectType = new GraphQLInputObjectType
     })
 });
 
-export const CreatePostNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(CreatePostType);
+export const CreatePostNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(CreatePostInputType);
 
-export const ChangePostNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangePostType);
+export const ChangePostNonNullType: GraphQLNonNull<GraphQLInputObjectType> = new GraphQLNonNull(ChangePostInputType);
