@@ -12,23 +12,23 @@ export enum MemberTypes {
     Business = 'business'
 }
 
-export const MemberId: GraphQLEnumType = new GraphQLEnumType({
-    name: 'MemberId',
+export const MemberTypeId = new GraphQLEnumType({
+    name: 'MemberTypeId',
     values: {
-        basic: {value: MemberTypes.Basic},
-        business: {value: MemberTypes.Business},
+        [MemberTypes.Basic]: {value: MemberTypes.Basic},
+        [MemberTypes.Business]: {value: MemberTypes.Business},
     }
 });
 
 export const MemberType = new GraphQLObjectType({
     name: 'Member',
     fields: () => ({
-        id: {type: MemberId},
+        id: {type: MemberTypeId},
         discount: {type: GraphQLFloat},
         postsLimitPerMonth: {type: GraphQLInt},
     })
 });
 
-export const MemberIdNonNullType: GraphQLNonNull<GraphQLEnumType> = new GraphQLNonNull(MemberId);
+export const MemberIdNonNullType = new GraphQLNonNull(MemberTypeId);
 
 export const MembersType: GraphQLList<GraphQLObjectType> = new GraphQLList(MemberType);

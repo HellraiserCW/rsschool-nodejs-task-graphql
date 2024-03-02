@@ -1,16 +1,16 @@
+import { GraphQLNonNull } from 'graphql';
+
 import {
-    GraphQLBoolean, GraphQLEnumType,
+    GraphQLBoolean,
     GraphQLInputObjectType,
     GraphQLInt,
     GraphQLList,
     GraphQLObjectType
 } from 'graphql/type/index.js';
 import { Profile } from '../interfaces/profile.interface.js';
-import { MemberId, MemberIdNonNullType, MemberType } from './member.js';
+import { MemberIdNonNullType, MemberType, MemberTypeId } from './member.js';
 import { UUIDNonNullType, UUIDType } from './uuid.js';
 import { GqlContext } from '../interfaces/app.interface.js';
-import { GraphQLNonNull } from 'graphql';
-import { ChangePostType, CreatePostType } from './post.js';
 
 export const ProfileType = new GraphQLObjectType({
     name: 'Profile',
@@ -19,7 +19,7 @@ export const ProfileType = new GraphQLObjectType({
         isMale: {type: GraphQLBoolean},
         yearOfBirth: {type: GraphQLInt},
         userId: {type: UUIDType},
-        memberTypeId: {type: MemberId},
+        memberTypeId: {type: MemberTypeId},
         memberType: {
             type: MemberType,
             resolve: async ({memberTypeId}: Profile, _, {loaders: {memberTypeLoader}}: GqlContext) => {
@@ -44,7 +44,7 @@ export const CreateProfileType: GraphQLInputObjectType = new GraphQLInputObjectT
 export const ChangeProfileType: GraphQLInputObjectType = new GraphQLInputObjectType({
     name: 'ChangeProfile',
     fields: () => ({
-        memberTypeId: {type: MemberId},
+        memberTypeId: {type: MemberTypeId},
         isMale: {type: GraphQLBoolean},
         yearOfBirth: {type: GraphQLInt}
     })

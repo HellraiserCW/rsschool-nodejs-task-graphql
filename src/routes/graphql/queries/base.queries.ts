@@ -1,9 +1,5 @@
 import { GraphQLObjectType, GraphQLResolveInfo } from 'graphql';
-import {
-    ResolveTree,
-    parseResolveInfo,
-    simplifyParsedResolveInfoFragmentWithType,
-} from 'graphql-parse-resolve-info';
+import { parseResolveInfo, ResolveTree, simplifyParsedResolveInfoFragmentWithType, } from 'graphql-parse-resolve-info';
 
 import { UsersType, UserType } from '../types/user.js';
 import { UUIDNonNullType } from '../types/uuid.js';
@@ -26,9 +22,12 @@ const UserQueries = {
     },
     users: {
         type: UsersType,
-        resolve: async (_p, _a, { prisma, loaders: { userSubscribedToLoader, subscribedToUserLoader } }: GqlContext, info: GraphQLResolveInfo) => {
+        resolve: async (_p, _a, {
+            prisma,
+            loaders: {userSubscribedToLoader, subscribedToUserLoader}
+        }: GqlContext, info: GraphQLResolveInfo) => {
             const parsedResolveInfoFragment: ResolveTree = parseResolveInfo(info) as ResolveTree;
-            const { fields } = simplifyParsedResolveInfoFragmentWithType(parsedResolveInfoFragment, info.returnType);
+            const {fields} = simplifyParsedResolveInfoFragmentWithType(parsedResolveInfoFragment, info.returnType);
             const subscriptions: boolean = 'subscribedToUser' in fields;
             const subscribers: boolean = 'userSubscribedTo' in fields;
             const users = await prisma.user.findMany({
@@ -44,14 +43,14 @@ const UserQueries = {
                     if (subscriptions) {
                         subscribedToUserLoader.prime(
                             user.id,
-                            user.subscribedToUser.map(({ subscriberId }) => mappedUsers.get(subscriberId) as Subscriptions)
+                            user.subscribedToUser.map(({subscriberId}) => mappedUsers.get(subscriberId) as Subscriptions)
                         );
                     }
 
                     if (subscribers) {
                         userSubscribedToLoader.prime(
                             user.id,
-                            user.userSubscribedTo.map(({ authorId }) => mappedUsers.get(authorId) as Subscribers),
+                            user.userSubscribedTo.map(({authorId}) => mappedUsers.get(authorId) as Subscribers),
                         );
                     }
                 });
